@@ -29,19 +29,19 @@ No further inputs are accepted until DEBOUNCE milliseconds have occurred.
 #    endif
 #endif
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
-#endif
+// #ifndef DEBOUNCE
+// #    define DEBOUNCE 5
+// #endif
 
-// Maximum debounce: 255ms
-#if DEBOUNCE > UINT8_MAX
-#    undef DEBOUNCE
-#    define DEBOUNCE UINT8_MAX
-#endif
+// // Maximum debounce: 255ms
+// #if DEBOUNCE > UINT8_MAX
+// #    undef DEBOUNCE
+// #    define DEBOUNCE UINT8_MAX
+// #endif
 
 typedef uint8_t debounce_counter_t;
 
-#if DEBOUNCE > 0
+// #if DEBOUNCE > 0
 static bool matrix_need_update;
 
 static debounce_counter_t *debounce_counters;
@@ -127,9 +127,9 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
         // determine new value basd on debounce pointer + raw value
         if (existing_row != raw_row) {
             if (*debounce_pointer == DEBOUNCE_ELAPSED) {
-                *debounce_pointer = DEBOUNCE;
-                cooked[row]       = raw_row;
-                cooked_changed |= cooked[row] ^ raw[row];
+                *debounce_pointer = Debounce_Delay;
+                cooked_changed |= cooked[row] ^ raw_row;
+                cooked[row]          = raw_row;
                 counters_need_update = true;
             }
         }
@@ -137,6 +137,6 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
     }
 }
 
-#else
-#    include "none.c"
-#endif
+// #else
+// #    include "none.c"
+// #endif

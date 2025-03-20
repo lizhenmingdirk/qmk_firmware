@@ -29,21 +29,21 @@ When no state changes have occured for DEBOUNCE milliseconds, we push the state.
 #    endif
 #endif
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
-#endif
+// #ifndef DEBOUNCE
+// #    define DEBOUNCE 5
+// #endif
 
-// Maximum debounce: 255ms
-#if DEBOUNCE > UINT8_MAX
-#    undef DEBOUNCE
-#    define DEBOUNCE UINT8_MAX
-#endif
+// // Maximum debounce: 255ms
+// #if DEBOUNCE > UINT8_MAX
+// #    undef DEBOUNCE
+// #    define DEBOUNCE UINT8_MAX
+// #endif
 
 #define ROW_SHIFTER ((matrix_row_t)1)
 
 typedef uint8_t debounce_counter_t;
 
-#if DEBOUNCE > 0
+// #if DEBOUNCE > 0
 static debounce_counter_t *debounce_counters;
 static fast_timer_t        last_time;
 static bool                counters_need_update;
@@ -128,7 +128,7 @@ static void start_debounce_counters(matrix_row_t raw[], matrix_row_t cooked[], u
         for (uint8_t col = 0; col < MATRIX_COLS; col++) {
             if (delta & (ROW_SHIFTER << col)) {
                 if (*debounce_pointer == DEBOUNCE_ELAPSED) {
-                    *debounce_pointer    = DEBOUNCE;
+                    *debounce_pointer    = Debounce_Delay;
                     counters_need_update = true;
                 }
             } else {
@@ -139,6 +139,6 @@ static void start_debounce_counters(matrix_row_t raw[], matrix_row_t cooked[], u
     }
 }
 
-#else
-#    include "none.c"
-#endif
+// #else
+// #    include "none.c"
+// #endif
