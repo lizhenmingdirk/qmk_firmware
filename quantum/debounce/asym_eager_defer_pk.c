@@ -18,8 +18,9 @@
  */
 
 /*
-Basic symmetric per-key algorithm. Uses an 8-bit counter per key.
-When no state changes have occured for DEBOUNCE milliseconds, we push the state.
+Asymetric per-key algorithm. After pressing a key, it immediately changes state,
+with no further inputs accepted until DEBOUNCE milliseconds have occurred. After
+releasing a key, that state is pushed after no changes occur for DEBOUNCE milliseconds.
 */
 
 #include "debounce.h"
@@ -32,15 +33,15 @@ When no state changes have occured for DEBOUNCE milliseconds, we push the state.
 #    endif
 #endif
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
-#endif
+// #ifndef DEBOUNCE
+// #    define DEBOUNCE 5
+// #endif
 
-// Maximum debounce: 127ms
-#if DEBOUNCE > 127
-#    undef DEBOUNCE
-#    define DEBOUNCE 127
-#endif
+// // Maximum debounce: 127ms
+// #if DEBOUNCE > 127
+// #    undef DEBOUNCE
+// #    define DEBOUNCE 127
+// #endif
 
 #define ROW_SHIFTER ((matrix_row_t)1)
 
@@ -49,7 +50,7 @@ typedef struct {
     uint8_t time : 7;
 } debounce_counter_t;
 
-#if DEBOUNCE > 0
+// #if DEBOUNCE > 0
 static debounce_counter_t *debounce_counters;
 static fast_timer_t        last_time;
 static bool                counters_need_update;
@@ -153,7 +154,7 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
             if (delta & col_mask) {
                 if (debounce_pointer->time == DEBOUNCE_ELAPSED) {
                     debounce_pointer->pressed = (raw[row] & col_mask);
-                    debounce_pointer->time    = DEBOUNCE;
+                    debounce_pointer->time    = Debounce_Delay;
                     counters_need_update      = true;
 
                     if (debounce_pointer->pressed) {
@@ -173,6 +174,6 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
     }
 }
 
-#else
-#    include "none.c"
-#endif
+// #else
+// #    include "none.c"
+// #endif

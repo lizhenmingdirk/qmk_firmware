@@ -18,7 +18,30 @@
         "xstddef": "c",
         "type_traits": "c",
         "utility": "c",
-        "ranges": "c"
+        "ranges": "c",
+        "cstdint": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "span": "c",
+        "compare": "c",
+        "bitset": "c",
+        "regex": "c",
+        "numbers": "c",
+        "random": "c",
+        "bit": "c",
+        "cstddef": "c",
+        "list": "c",
+        "optional": "c",
+        "limits": "c",
+        "memory": "c",
+        "new": "c",
+        "functional": "c",
+        "chrono": "c",
+        "variant": "c",
+        "ratio": "c",
+        "future": "c",
+        "system_error": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,
@@ -30,5 +53,6 @@
     },
     "clangd.arguments": [
         "--header-insertion=never"
-    ]
+    ],
+    "editor.fontSize": 14
 }

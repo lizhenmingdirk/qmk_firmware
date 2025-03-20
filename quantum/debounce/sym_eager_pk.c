@@ -29,21 +29,21 @@ No further inputs are accepted until DEBOUNCE milliseconds have occurred.
 #    endif
 #endif
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
-#endif
+// #ifndef DEBOUNCE
+// #    define DEBOUNCE 5
+// #endif
 
 // Maximum debounce: 255ms
-#if DEBOUNCE > UINT8_MAX
-#    undef DEBOUNCE
-#    define DEBOUNCE UINT8_MAX
-#endif
+// #if DEBOUNCE > UINT8_MAX
+// #    undef DEBOUNCE
+// #    define DEBOUNCE UINT8_MAX
+// #endif
 
 #define ROW_SHIFTER ((matrix_row_t)1)
 
 typedef uint8_t debounce_counter_t;
 
-#if DEBOUNCE > 0
+// #if DEBOUNCE > 0
 static debounce_counter_t *debounce_counters;
 static fast_timer_t        last_time;
 static bool                counters_need_update;
@@ -133,7 +133,7 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
             matrix_row_t col_mask = (ROW_SHIFTER << col);
             if (delta & col_mask) {
                 if (*debounce_pointer == DEBOUNCE_ELAPSED) {
-                    *debounce_pointer    = DEBOUNCE;
+                    *debounce_pointer    = Debounce_Delay;
                     counters_need_update = true;
                     existing_row ^= col_mask; // flip the bit.
                     cooked_changed = true;
@@ -145,6 +145,6 @@ static void transfer_matrix_values(matrix_row_t raw[], matrix_row_t cooked[], ui
     }
 }
 
-#else
-#    include "none.c"
-#endif
+// #else
+// #    include "none.c"
+// #endif

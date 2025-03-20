@@ -19,6 +19,7 @@
 #include "wait.h"
 #include "eeconfig.h"
 #include "bootloader.h"
+#include "debounce.h"
 
 /** \brief Reset eeprom
  *
@@ -35,11 +36,11 @@ __attribute__((weak)) void bootmagic_lite_reset_eeprom(void) {
 __attribute__((weak)) void bootmagic_lite(void) {
     // We need multiple scans because debouncing can't be turned off.
     matrix_scan();
-#if defined(DEBOUNCE) && DEBOUNCE > 0
-    wait_ms(DEBOUNCE * 2);
-#else
-    wait_ms(30);
-#endif
+    if(Debounce_Delay > 0)
+        wait_ms(Debounce_Delay * 2);
+    else
+        wait_ms(30);
+
     matrix_scan();
 
     // If the configured key (commonly Esc) is held down on power up,
