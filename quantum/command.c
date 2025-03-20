@@ -62,22 +62,22 @@ command_state_t command_state = ONESHOT;
 
 bool command_proc(uint8_t code) {
     switch (command_state) {
-        case ONESHOT:
+        case ONESHOT:           //单次命令模式
             if (!IS_COMMAND()) return false;
-            return (command_extra(code) || command_common(code));
+            return (command_extra(code) || command_common(code));       //处理额外命令 || 处理通用命令
             break;
-        case CONSOLE:
+        case CONSOLE:           //终端控制台模式
             if (IS_COMMAND())
                 return (command_extra(code) || command_common(code));
             else
-                return (command_console_extra(code) || command_console(code));
+                return (command_console_extra(code) || command_console(code));   //处理控制台额外命令 ||  处理鼠标模式命令
             break;
-#if defined(MOUSEKEY_ENABLE)
+#if defined(MOUSEKEY_ENABLE)    //鼠标模式
         case MOUSEKEY:
             mousekey_console(code);
             break;
 #endif
-        default:
+        default:                //异常情况处理
             command_state = ONESHOT;
             return false;
     }
@@ -222,21 +222,16 @@ static void print_status(void) {
         "\n\t- Status -\n"
 
         "host_keyboard_leds(): %02X\n"
-#ifndef PROTOCOL_VUSB
         "keyboard_protocol: %02X\n"
         "keyboard_idle: %02X\n"
-#endif
 #ifdef NKRO_ENABLE
         "keymap_config.nkro: %02X\n"
 #endif
         "timer_read32(): %08lX\n"
 
         , host_keyboard_leds()
-#ifndef PROTOCOL_VUSB
-        /* these aren't set on the V-USB protocol, so we just ignore them for now */
         , keyboard_protocol
         , keyboard_idle
-#endif
 #ifdef NKRO_ENABLE
         , keymap_config.nkro
 #endif

@@ -21,9 +21,9 @@ DEBOUNCE milliseconds have elapsed since the last change.
 #include "timer.h"
 #include <stdlib.h>
 
-#ifndef DEBOUNCE
-#    define DEBOUNCE 5
-#endif
+// #ifndef DEBOUNCE
+// #    define DEBOUNCE 5
+// #endif
 
 static uint16_t last_time;
 // [row] milliseconds until key's state is considered debounced.
@@ -58,7 +58,7 @@ bool debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool 
         matrix_row_t raw_row = raw[row];
 
         if (raw_row != last_raw[row]) {
-            *countdown    = DEBOUNCE;
+            *countdown    = Debounce_Delay;
             last_raw[row] = raw_row;
         } else if (*countdown > elapsed) {
             *countdown -= elapsed;

@@ -374,7 +374,7 @@ void process_action(keyrecord_t *record, action_t action) {
     if (is_oneshot_layer_active() && event.pressed &&
         (action.kind.id == ACT_USAGE || !(IS_MODIFIER_KEYCODE(action.key.code)
 #    ifndef NO_ACTION_TAPPING
-                                          || (tap_count == 0 && (action.kind.id == ACT_LMODS_TAP || action.kind.id == ACT_RMODS_TAP))
+                                          || ((action.kind.id == ACT_LMODS_TAP || action.kind.id == ACT_RMODS_TAP) && (action.layer_tap.code <= MODS_TAP_TOGGLE || tap_count == 0))
 #    endif
                                               ))
 #    ifdef SWAP_HANDS_ENABLE
@@ -497,7 +497,7 @@ void process_action(keyrecord_t *record, action_t action) {
                 default:
                     if (event.pressed) {
                         if (tap_count > 0) {
-#    ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+#    ifdef HOLD_ON_OTHER_KEY_PRESS
                             if (
 #        ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
                                 get_hold_on_other_key_press(get_event_keycode(record->event, false), record) &&
@@ -878,7 +878,7 @@ void process_action(keyrecord_t *record, action_t action) {
 }
 
 /** \brief Utilities for actions. (FIXME: Needs better description)
- *
+ *      按键按下处理函数
  * FIXME: Needs documentation.
  */
 __attribute__((weak)) void register_code(uint8_t code) {
@@ -918,20 +918,15 @@ __attribute__((weak)) void register_code(uint8_t code) {
         send_keyboard_report();
 #endif
 
-    } else if (IS_BASIC_KEYCODE(code)) {
-        // TODO: should push command_proc out of this block?
-        if (command_proc(code)) return;
-
-        // Force a new key press if the key is already pressed
-        // without this, keys with the same keycode, but different
-        // modifiers will be reported incorrectly, see issue #1708
-        if (is_key_pressed(keyboard_report, code)) {
-            del_key(code);
-            send_keyboard_report();
-        }
+    } else if (IS_BASIC_KEYCODE(code)) {      //按键为基础按键
+        if (command_proc(code)) return;       //是否为命令按键
+        // if (is_key_pressed(code)) {           // 检查指定的按键是否已经存储在键盘报告中
+        //     del_key(code);                    // 删除该按键
+        //     send_keyboard_report();           // 发送更新后的键盘报告。
+        // } else {
         add_key(code);
         send_keyboard_report();
-    } else if (IS_MODIFIER_KEYCODE(code)) {
+    } else if (IS_MODIFIER_KEYCODE(code)) {   //热键
         add_mods(MOD_BIT(code));
         send_keyboard_report();
 
@@ -948,7 +943,7 @@ __attribute__((weak)) void register_code(uint8_t code) {
 }
 
 /** \brief Utilities for actions. (FIXME: Needs better description)
- *
+ *      按键释放处理函数
  * FIXME: Needs documentation.
  */
 __attribute__((weak)) void unregister_code(uint8_t code) {
@@ -986,8 +981,8 @@ __attribute__((weak)) void unregister_code(uint8_t code) {
 #endif
 
     } else if (IS_BASIC_KEYCODE(code)) {
-        del_key(code);
-        send_keyboard_report();
+        del_key(code);                      //释放删除按键
+        send_keyboard_report();             //发送按键键码
     } else if (IS_MODIFIER_KEYCODE(code)) {
         del_mods(MOD_BIT(code));
         send_keyboard_report();
@@ -1011,9 +1006,7 @@ __attribute__((weak)) void unregister_code(uint8_t code) {
  */
 __attribute__((weak)) void tap_code_delay(uint8_t code, uint16_t delay) {
     register_code(code);
-    for (uint16_t i = delay; i > 0; i--) {
-        wait_ms(1);
-    }
+    wait_ms(delay);
     unregister_code(code);
 }
 

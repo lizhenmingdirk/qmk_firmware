@@ -17,6 +17,11 @@
 ///  the numerator of a fraction whose denominator is 256
 ///  In other words, it computes i * (scale / 256)
 ///  4 clocks AVR with MUL, 2 clocks ARM
+LIB8STATIC_ALWAYS_INLINE uint8_t User_scale8( uint8_t i, fract8 scale)
+{
+    return i;
+}
+
 LIB8STATIC_ALWAYS_INLINE uint8_t scale8( uint8_t i, fract8 scale)
 {
 #if SCALE8_C == 1

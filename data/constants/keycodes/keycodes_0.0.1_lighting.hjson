@@ -28,6 +28,7 @@
                 "BL_DOWN"
             ]
         },
+        
         "0x7804": {
             "group": "backlight",
             "key": "QK_BACKLIGHT_UP",

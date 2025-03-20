@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "matrix.h"
+    
+
+extern unsigned int Debounce_Delay;   //键盘消抖时间，最大为127
 
 /**
  * @brief Debounce raw matrix events according to the choosen debounce algorithm.
