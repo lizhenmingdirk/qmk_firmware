@@ -2,9 +2,9 @@
 
 A customizable 85key keyboard.
 
-![Neo60](https://raw.githubusercontent.com/Linyer-qwq/image/main/Neo60.jpg)
+![Neo60]
 
-* Keyboard Maintainer: [LiWenLiu](https://github.com/LiuLiuQMK)
+* Keyboard Maintainer: 
 * Hardware Supported: Neo60 PCB with es32fs026 microcontroller
 
 Make example for this keyboard (after setting up your build environment):
